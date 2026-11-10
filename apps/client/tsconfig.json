@@ -23,6 +23,7 @@
     "allowSyntheticDefaultImports": true,
 
     "paths": {
+      "@/ee/*": ["./src/oss/ee-shim/*"],
       "@/*": ["./src/*"]
     }
   },

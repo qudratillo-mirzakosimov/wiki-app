@@ -50,9 +50,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     resolve: {
-      alias: {
-        "@": "/src",
-      },
+      // Bolder fork: Enterprise modules are replaced by open-source shims; this entry
+      // must precede "@" or the generic alias would resolve them first.
+      alias: [
+        { find: /^@\/ee\//, replacement: "/src/oss/ee-shim/" },
+        { find: "@", replacement: "/src" },
+      ],
     },
     server: {
       proxy: {

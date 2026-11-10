@@ -1,0 +1,27 @@
+// Bolder fork: open-source stand-in for a Docmost Enterprise module.
+// Written from scratch (AGPL-3.0); no Enterprise code is used. See oss/README.md.
+export const Feature = {
+  SSO_CUSTOM: "sso:custom",
+  SSO_GOOGLE: "sso:google",
+  MFA: "mfa",
+  API_KEYS: "api:keys",
+  COMMENT_RESOLUTION: "comment:resolution",
+  PAGE_PERMISSIONS: "page:permissions",
+  AI: "ai",
+  CONFLUENCE_IMPORT: "import:confluence",
+  DOCX_IMPORT: "import:docx",
+  PDF_IMPORT: "import:pdf",
+  ATTACHMENT_INDEXING: "attachment:indexing",
+  SECURITY_SETTINGS: "security:settings",
+  MCP: "mcp",
+  SCIM: "scim",
+  PAGE_VERIFICATION: "page:verification",
+  AUDIT_LOGS: "audit:logs",
+  RETENTION: "retention",
+  SHARING_CONTROLS: "sharing:controls",
+  TEMPLATES: "templates",
+  VIEWER_COMMENTS: "comment:viewer",
+  PERSONAL_SPACES: "spaces:personal",
+  DOCX_EXPORT: "export:docx",
+  BASES: "bases",
+} as const;
