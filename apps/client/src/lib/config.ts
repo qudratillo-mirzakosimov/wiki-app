@@ -9,8 +9,15 @@ declare global {
   }
 }
 
+// Bolder fork: the name comes from the server's APP_NAME (window.CONFIG), so one image can
+// serve differently named instances. Keep the fallback in sync with apps/server/src/oss/brand.ts.
 export function getAppName(): string {
-  return "Docmost";
+  return getConfigValue("APP_NAME") || "Bolder Wiki";
+}
+
+// AGPL-3.0 §13 source offer; empty when the deployment has not set SOURCE_CODE_URL.
+export function getSourceCodeUrl(): string | undefined {
+  return getConfigValue("SOURCE_CODE_URL") || undefined;
 }
 
 export function getAppUrl(): string {

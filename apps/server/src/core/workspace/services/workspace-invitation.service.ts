@@ -45,6 +45,7 @@ import {
   getWorkspaceDefaultPageEditMode,
   isAdminActingOnOwner,
 } from '../workspace.util';
+import { getBrandName } from '../../../oss/brand';
 
 @Injectable()
 export class WorkspaceInvitationService {
@@ -328,7 +329,7 @@ export class WorkspaceInvitationService {
 
       await this.mailService.sendToQueue({
         to: invitedByUser.email,
-        subject: `${newUser.name} has accepted your Docmost invite`,
+        subject: `${newUser.name} has accepted your ${getBrandName()} invite`,
         template: emailTemplate,
       });
     }
@@ -477,7 +478,7 @@ export class WorkspaceInvitationService {
 
     await this.mailService.sendToQueue({
       to: inviteeEmail,
-      subject: `${invitedByName} invited you to Docmost`,
+      subject: `${invitedByName} invited you to ${getBrandName()}`,
       template: emailTemplate,
     });
   }

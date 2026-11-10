@@ -9,6 +9,7 @@ import {
   Text,
 } from 'react-email';
 import * as React from 'react';
+import { getBrandName } from '../../../oss/brand';
 
 interface MailBodyProps {
   children: React.ReactNode;
@@ -81,7 +82,7 @@ export function MailFooter() {
     <Section style={footer}>
       <Row>
         <Text style={{ textAlign: 'center', color: '#706a7b' }}>
-          © {new Date().getFullYear()} Docmost, All Rights Reserved <br />
+          © {new Date().getFullYear()} {getBrandName()} <br />
         </Text>
       </Row>
     </Section>

@@ -16,6 +16,8 @@ export default defineConfig(({ mode }) => {
     BILLING_TRIAL_DAYS,
     POSTHOG_HOST,
     POSTHOG_KEY,
+    APP_NAME,
+    SOURCE_CODE_URL,
   } = loadEnv(mode, envPath, "");
 
   return {
@@ -31,10 +33,22 @@ export default defineConfig(({ mode }) => {
         BILLING_TRIAL_DAYS,
         POSTHOG_HOST,
         POSTHOG_KEY,
+        APP_NAME,
+        SOURCE_CODE_URL,
       },
       APP_VERSION: JSON.stringify(process.env.npm_package_version),
     },
-    plugins: [react()],
+    plugins: [
+      react(),
+      // Bolder fork: production replaces __APP_NAME__ at server boot (static.module.ts);
+      // the dev server has no such step, so do it here.
+      {
+        name: "bolder-app-name",
+        apply: "serve",
+        transformIndexHtml: (html: string) =>
+          html.replaceAll("__APP_NAME__", APP_NAME || "Bolder Wiki"),
+      },
+    ],
     build: {
       rolldownOptions: {
         output: {

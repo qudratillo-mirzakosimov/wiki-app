@@ -23,7 +23,8 @@ import { useToggleSidebar } from "@/components/layouts/global/hooks/hooks/use-to
 import SidebarToggle from "@/components/ui/sidebar-toggle-button.tsx";
 import { useTranslation } from "react-i18next";
 import useTrial from "@/ee/hooks/use-trial.tsx";
-import { isCloud } from "@/lib/config.ts";
+import { getAppName, isCloud } from "@/lib/config.ts";
+import { BrandLogo } from "@/oss/brand/brand-logo";
 import {
   SearchControl,
   SearchMobileControl,
@@ -84,14 +85,9 @@ export function AppHeader() {
             />
           </Tooltip>
 
-          <Link to="/home" className={classes.brand} aria-label="Docmost">
+          <Link to="/home" className={classes.brand} aria-label={getAppName()}>
             <Box hiddenFrom="sm" className={classes.brandIcon}>
-              <img
-                src="/icons/favicon-32x32.png"
-                alt="Docmost"
-                width={22}
-                height={22}
-              />
+              <BrandLogo size={22} />
             </Box>
             <Text
               size="lg"
@@ -99,7 +95,7 @@ export function AppHeader() {
               style={{ userSelect: "none" }}
               visibleFrom="sm"
             >
-              Docmost
+              {getAppName()}
             </Text>
           </Link>
 

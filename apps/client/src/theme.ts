@@ -7,19 +7,11 @@ import {
   Tooltip,
   v8CssVariablesResolver,
 } from "@mantine/core";
+import { primary as brandPrimary } from "@/oss/brand/palette";
 
-const blue: MantineColorsTuple = [
-  "#e7f3ff",
-  "#d0e4ff",
-  "#a1c6fa",
-  "#6ea6f6",
-  "#458bf2",
-  "#2b7af1",
-  "#0b60d8",
-  "#1b72f2",
-  "#0056c1",
-  "#004aac",
-];
+// Bolder fork: brand colour lives in oss/brand/palette.ts; "blue" is Mantine's default
+// primaryColor, so overriding it rebrands every primary button, link and focus ring.
+const blue: MantineColorsTuple = brandPrimary;
 
 const red: MantineColorsTuple = [
   "#ffebeb",

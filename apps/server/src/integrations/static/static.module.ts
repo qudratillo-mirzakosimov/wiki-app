@@ -4,6 +4,7 @@ import { join } from 'path';
 import * as fs from 'node:fs';
 import fastifyStatic from '@fastify/static';
 import { EnvironmentService } from '../environment/environment.service';
+import { escapeHtml, getBrandName, getSourceCodeUrl } from '../../oss/brand';
 
 @Module({})
 export class StaticModule implements OnModuleInit {
@@ -49,6 +50,8 @@ export class StaticModule implements OnModuleInit {
           : undefined,
         POSTHOG_HOST: this.environmentService.getPostHogHost(),
         POSTHOG_KEY: this.environmentService.getPostHogKey(),
+        APP_NAME: getBrandName(),
+        SOURCE_CODE_URL: getSourceCodeUrl(),
       };
 
       const windowScriptContent = `<script>window.CONFIG=${JSON.stringify(configString)};</script>`;
@@ -58,7 +61,12 @@ export class StaticModule implements OnModuleInit {
       }
 
       const html = fs.readFileSync(indexTemplateFilePath, 'utf8');
-      const transformedHtml = html.replace(windowVar, windowScriptContent);
+      // Bolder fork: index.html carries __APP_NAME__ in <title> and the apple title meta.
+      const transformedHtml = html
+        .replace(windowVar, windowScriptContent)
+        .replaceAll('__APP_NAME__', escapeHtml(getBrandName()));
+
+      writeBrandedManifest(clientDistPath);
 
       fs.writeFileSync(indexFilePath, transformedHtml);
 
@@ -78,4 +86,19 @@ export class StaticModule implements OnModuleInit {
       });
     }
   }
+}
+
+// Bolder fork: the PWA manifest is a static file, so it is rewritten at boot from a pristine
+// copy (same pattern as index-template.html) to carry the per-instance APP_NAME.
+function writeBrandedManifest(clientDistPath: string) {
+  const manifestPath = join(clientDistPath, 'manifest.json');
+  const templatePath = join(clientDistPath, 'manifest-template.json');
+  if (!fs.existsSync(manifestPath) && !fs.existsSync(templatePath)) return;
+  if (!fs.existsSync(templatePath)) {
+    fs.copyFileSync(manifestPath, templatePath);
+  }
+  const manifest = JSON.parse(fs.readFileSync(templatePath, 'utf8'));
+  manifest.name = getBrandName();
+  manifest.short_name = getBrandName();
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
