@@ -5,6 +5,7 @@ import * as fs from 'node:fs';
 import fastifyStatic from '@fastify/static';
 import { EnvironmentService } from '../environment/environment.service';
 import { escapeHtml, getBrandName, getSourceCodeUrl } from '../../oss/brand';
+import { readGoogleAuthConfig } from '../../oss/google-auth/google-auth.policy';
 
 @Module({})
 export class StaticModule implements OnModuleInit {
@@ -52,6 +53,7 @@ export class StaticModule implements OnModuleInit {
         POSTHOG_KEY: this.environmentService.getPostHogKey(),
         APP_NAME: getBrandName(),
         SOURCE_CODE_URL: getSourceCodeUrl(),
+        GOOGLE_AUTH_ENABLED: readGoogleAuthConfig() !== null,
       };
 
       const windowScriptContent = `<script>window.CONFIG=${JSON.stringify(configString)};</script>`;

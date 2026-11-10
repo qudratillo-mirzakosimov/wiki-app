@@ -24,6 +24,7 @@ import { WatcherModule } from './watcher/watcher.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { SessionModule } from './session/session.module';
 import { ClsMiddleware } from 'nestjs-cls';
+import { GoogleAuthModule } from '../oss/google-auth/google-auth.module';
 
 @Module({
   imports: [
@@ -44,6 +45,8 @@ import { ClsMiddleware } from 'nestjs-cls';
     NotificationModule,
     WatcherModule,
     SessionModule,
+    // Bolder fork
+    GoogleAuthModule,
   ],
 })
 export class CoreModule implements NestModule {

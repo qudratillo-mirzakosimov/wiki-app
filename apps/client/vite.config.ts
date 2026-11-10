@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
     POSTHOG_KEY,
     APP_NAME,
     SOURCE_CODE_URL,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_ALLOWED_DOMAINS,
   } = loadEnv(mode, envPath, "");
 
   return {
@@ -35,6 +38,10 @@ export default defineConfig(({ mode }) => {
         POSTHOG_KEY,
         APP_NAME,
         SOURCE_CODE_URL,
+        // Only the on/off flag reaches the browser, never the Google credentials.
+        GOOGLE_AUTH_ENABLED: String(
+          Boolean(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_ALLOWED_DOMAINS),
+        ),
       },
       APP_VERSION: JSON.stringify(process.env.npm_package_version),
     },

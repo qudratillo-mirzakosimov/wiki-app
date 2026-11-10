@@ -20,6 +20,11 @@ export function getSourceCodeUrl(): string | undefined {
   return getConfigValue("SOURCE_CODE_URL") || undefined;
 }
 
+// Bolder fork: true when the server has GOOGLE_CLIENT_ID/SECRET/ALLOWED_DOMAINS set.
+export function isGoogleAuthEnabled(): boolean {
+  return castToBoolean(getConfigValue("GOOGLE_AUTH_ENABLED"));
+}
+
 export function getAppUrl(): string {
   return `${window.location.protocol}//${window.location.host}`;
 }

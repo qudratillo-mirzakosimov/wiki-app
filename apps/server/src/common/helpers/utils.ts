@@ -164,7 +164,8 @@ export function isUserDisabled(user: {
   return !!(user.deactivatedAt || user.deletedAt);
 }
 
-const SENSITIVE_URL_PREFIXES = ['/api/sso/'];
+// Bolder fork: the Google callback carries the one-time authorization code in its query.
+const SENSITIVE_URL_PREFIXES = ['/api/sso/', '/api/auth/google/'];
 
 export function redactSensitiveUrl(url: string): string {
   if (url && SENSITIVE_URL_PREFIXES.some((prefix) => url.includes(prefix))) {
