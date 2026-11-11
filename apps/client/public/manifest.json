@@ -3,8 +3,8 @@
   "short_name": "Bolder Wiki",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#222",
-  "theme_color": "#222",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "brand/favicon-16x16.png",

@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo">
-  <!-- PLACEHOLDER mark until the real brand assets arrive. Replace this file, keep the name. -->
-  <rect width="64" height="64" rx="14" fill="#1b72f2"/>
-  <text x="32" y="45" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff">B</text>
+<svg width="68" height="64" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Logo/Tile">
+<g id="Frame" clip-path="url(#clip0_1_3)">
+<path id="Vector" d="M44 8H12C5.37258 8 0 13.3726 0 20V52C0 58.6274 5.37258 64 12 64H44C50.6274 64 56 58.6274 56 52V20C56 13.3726 50.6274 8 44 8Z" fill="#4F4F4F"/>
+<path id="Vector_2" d="M56 0H24C17.3726 0 12 5.37258 12 12V44C12 50.6274 17.3726 56 24 56H56C62.6274 56 68 50.6274 68 44V12C68 5.37258 62.6274 0 56 0Z" fill="#FF4626"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_1_3">
+<rect width="68" height="64" fill="white"/>
+</clipPath>
+</defs>
 </svg>

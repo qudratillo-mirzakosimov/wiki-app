@@ -3,6 +3,9 @@ import "@mantine/spotlight/styles.css";
 import "@mantine/notifications/styles.css";
 import '@mantine/dates/styles.css';
 import "@/styles/a11y-overrides.css";
+// Bolder fork: brand typefaces, self-hosted (SIL OFL), no third-party font CDN.
+import "@fontsource-variable/inter";
+import "@fontsource-variable/montserrat";
 
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";

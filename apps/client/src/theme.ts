@@ -7,7 +7,11 @@ import {
   Tooltip,
   v8CssVariablesResolver,
 } from "@mantine/core";
-import { primary as brandPrimary } from "@/oss/brand/palette";
+import {
+  fonts as brandFonts,
+  primary as brandPrimary,
+  primaryShade as brandPrimaryShade,
+} from "@/oss/brand/palette";
 
 // Bolder fork: brand colour lives in oss/brand/palette.ts; "blue" is Mantine's default
 // primaryColor, so overriding it rebrands every primary button, link and focus ring.
@@ -32,6 +36,10 @@ export const theme = createTheme({
     red,
   },
   defaultRadius: 'sm',
+  // Bolder fork: brand shade and typefaces (oss/brand/palette.ts).
+  primaryShade: brandPrimaryShade,
+  fontFamily: brandFonts.body,
+  headings: { fontFamily: brandFonts.headings, fontWeight: "700" },
   components: {
     Tooltip: Tooltip.extend({
       defaultProps: {
@@ -116,6 +124,9 @@ export const mantineCssResolver: CSSVariablesResolver = (theme) => ({
     // matching Button / Text usages.
     "--mantine-color-green-light-color": "#1B5E20",
     "--mantine-color-orange-light-color": "#a63508",
+    // Bolder fork: links in body text use orange 700 (6.4:1 on white); the filled
+    // shade 600 is 4.4:1, just under AA for normal-size text.
+    "--mantine-color-anchor": "var(--mantine-color-blue-7)",
   },
   dark: {
     ...v8CssVariablesResolver(theme).dark,
