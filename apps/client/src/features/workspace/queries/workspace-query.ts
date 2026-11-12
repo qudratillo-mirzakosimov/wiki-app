@@ -170,7 +170,15 @@ export function useCreateInvitationMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      // Only workspace Admins/Owners may invite; the server answers a bare
+      // "Forbidden". The UI hides the entry points from members, so this is the
+      // fallback for a stale role. Group membership (e.g. "admin") does not count.
+      const errorMessage =
+        error["response"]?.status === 403
+          ? t(
+              "Only workspace admins can invite people. Ask an admin to send the invitation.",
+            )
+          : error["response"]?.data?.message;
       notifications.show({ message: errorMessage, color: "red" });
     },
   });

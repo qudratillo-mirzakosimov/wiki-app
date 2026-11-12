@@ -24,6 +24,7 @@ import { AvatarIconType } from "@/features/attachments/types/attachment.types";
 import { useHasFeature } from "@/ee/hooks/use-feature";
 import { Feature } from "@/ee/features";
 import { useUpgradeLabel } from "@/ee/hooks/use-upgrade-label";
+import useUserRole from "@/hooks/use-user-role.tsx";
 
 export default function GlobalSidebar() {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ export default function GlobalSidebar() {
   const toggleMobileSidebar = useToggleSidebar(mobileSidebarAtom);
   const hasTemplates = useHasFeature(Feature.TEMPLATES);
   const upgradeLabel = useUpgradeLabel();
+  const { isAdmin } = useUserRole();
   const mainNavItems = [
     { label: "Home", icon: IconHome, path: "/home" },
     { label: "Favorites", icon: IconStar, path: "/favorites" },
@@ -150,13 +152,17 @@ export default function GlobalSidebar() {
       </ScrollArea>
 
       <div className={classes.bottomSection}>
-        <UnstyledButton
-          className={classes.link}
-          onClick={openInvite}
-        >
-          <IconUserPlus className={classes.linkIcon} stroke={2} />
-          <span>{t("Invite People")}</span>
-        </UnstyledButton>
+        {/* Only Admins/Owner may invite (the server 403s anyone else), so the
+            entry point follows Settings > Members and hides for members. */}
+        {isAdmin && (
+          <UnstyledButton
+            className={classes.link}
+            onClick={openInvite}
+          >
+            <IconUserPlus className={classes.linkIcon} stroke={2} />
+            <span>{t("Invite People")}</span>
+          </UnstyledButton>
+        )}
         <Link
           className={classes.link}
           data-active={active.startsWith("/settings") || undefined}
