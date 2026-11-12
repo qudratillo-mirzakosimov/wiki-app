@@ -42,8 +42,10 @@ api.interceptors.response.use(
           break;
         case 404:
           // Handle not found error
+          // message can be missing or an array; .toLowerCase() on it threw
+          // inside the interceptor and replaced the real error with a TypeError.
           if (
-            error.response.data.message
+            String(error.response.data?.message ?? "")
               .toLowerCase()
               .includes("workspace not found")
           ) {

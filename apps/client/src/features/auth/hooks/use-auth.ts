@@ -28,6 +28,7 @@ import { RESET } from "jotai/utils";
 import { useTranslation } from "react-i18next";
 import { isCloud } from "@/lib/config.ts";
 import { exchangeTokenRedirectUrl, getHostnameUrl } from "@/ee/utils.ts";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 export default function useAuth() {
   const { t } = useTranslation();
@@ -63,7 +64,7 @@ export default function useAuth() {
       }
 
       notifications.show({
-        message,
+        message: getApiErrorMessage(err, t("Sign-in failed. Please try again.")),
         color: "red",
       });
     }
@@ -89,7 +90,7 @@ export default function useAuth() {
     } catch (err) {
       setIsLoading(false);
       notifications.show({
-        message: err.response?.data.message,
+        message: getApiErrorMessage(err, t("Failed to accept the invitation")),
         color: "red",
       });
     }
@@ -128,7 +129,7 @@ export default function useAuth() {
     } catch (err) {
       setIsLoading(false);
       notifications.show({
-        message: err.response?.data.message,
+        message: getApiErrorMessage(err, t("Failed to set up the workspace")),
         color: "red",
       });
     }
@@ -157,7 +158,7 @@ export default function useAuth() {
     } catch (err) {
       setIsLoading(false);
       notifications.show({
-        message: err.response?.data.message,
+        message: getApiErrorMessage(err, t("Failed to reset password")),
         color: "red",
       });
     }
@@ -181,7 +182,7 @@ export default function useAuth() {
       console.log(err);
       setIsLoading(false);
       notifications.show({
-        message: err.response?.data.message,
+        message: getApiErrorMessage(err, t("Failed to send the reset email")),
         color: "red",
       });
 
@@ -199,7 +200,7 @@ export default function useAuth() {
       console.log(err);
       setIsLoading(false);
       notifications.show({
-        message: err.response?.data.message,
+        message: getApiErrorMessage(err, t("This link is invalid or has expired")),
         color: "red",
       });
     }

@@ -12,6 +12,8 @@ import {
 import { ISession } from "@/features/session/types/session.types";
 import { notifications } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
+import i18n from "@/i18n.ts";
 
 export function useGetSessionsQuery(): UseQueryResult<ISession[], Error> {
   return useQuery({
@@ -31,7 +33,10 @@ export function useRevokeSessionMutation() {
       queryClient.invalidateQueries({ queryKey: ["session-list"] });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to revoke session"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -48,7 +53,10 @@ export function useRevokeAllSessionsMutation() {
       queryClient.invalidateQueries({ queryKey: ["session-list"] });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to revoke sessions"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });

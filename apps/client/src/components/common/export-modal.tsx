@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Feature } from "@/ee/features";
 import { useHasFeature } from "@/ee/hooks/use-feature";
 import { useUpgradeLabel } from "@/ee/hooks/use-upgrade-label";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 interface ExportModalProps {
   id: string;
@@ -69,7 +70,7 @@ export default function ExportModal({
       onClose();
     } catch (err) {
       notifications.show({
-        message: "Export failed:" + err.response?.data.message,
+        message: getApiErrorMessage(err, t("Export failed")),
         color: "red",
       });
       console.error("export error", err);

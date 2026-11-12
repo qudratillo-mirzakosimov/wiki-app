@@ -28,6 +28,7 @@ import {
   updateShare,
 } from "@/features/share/services/share-service.ts";
 import { IPagination, QueryParams } from "@/lib/types.ts";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 export function useGetSharesQuery(
   params?: QueryParams,
@@ -91,7 +92,7 @@ export function useCreateShareMutation() {
     },
     onError: (error) => {
       notifications.show({
-        message: error?.["response"]?.data?.message || t("Failed to share page"),
+        message: getApiErrorMessage(error, t("Failed to share page")),
         color: "red",
       });
     },
@@ -125,7 +126,7 @@ export function useUpdateShareMutation() {
       }
 
       notifications.show({
-        message: error?.["response"]?.data?.message || "Share not found",
+        message: getApiErrorMessage(error, t("Failed to update share")),
         color: "red",
       });
     },
@@ -160,7 +161,7 @@ export function useDeleteShareMutation() {
       }
 
       notifications.show({
-        message: error?.["response"]?.data?.message || "Failed to delete share",
+        message: getApiErrorMessage(error, t("Failed to delete share")),
         color: "red",
       });
     },

@@ -23,6 +23,8 @@ import { useEffect } from "react";
 import { validate as isValidUuid } from "uuid";
 import { queryClient } from "@/main.tsx";
 import { useTranslation } from 'react-i18next';
+import { getApiErrorMessage } from "@/lib/api-error.ts";
+import i18n from "@/i18n.ts";
 
 export function useGetGroupsQuery(
   params?: QueryParams,
@@ -85,7 +87,10 @@ export function useUpdateGroupMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to update group"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -102,7 +107,10 @@ export function useDeleteGroupMutation() {
       queryClient.refetchQueries({ queryKey: ["groups"] });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to delete group"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -161,7 +169,10 @@ export function useRemoveGroupMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to remove group member"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });

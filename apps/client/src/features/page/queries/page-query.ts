@@ -40,6 +40,7 @@ import { treeDataAtom } from "@/features/page/tree/atoms/tree-data-atom";
 import { treeModel } from "@/features/page/tree/model/tree-model";
 import { SpaceTreeNode } from "@/features/page/tree/types";
 import { useQueryEmit } from "@/features/websocket/use-query-emit";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 export function usePageQuery(
   pageInput: Partial<IPageInput>,
@@ -158,8 +159,7 @@ export function useDeletePageMutation() {
       });
     },
     onError: (error) => {
-      const message =
-        error["response"]?.data?.message || t("Failed to delete page");
+      const message = getApiErrorMessage(error, t("Failed to delete page"));
       notifications.show({ message, color: "red" });
     },
   });

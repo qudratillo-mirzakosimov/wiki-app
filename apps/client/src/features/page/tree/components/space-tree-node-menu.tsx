@@ -36,6 +36,7 @@ import { treeModel } from "@/features/page/tree/model/tree-model";
 import { useTreeMutation } from "@/features/page/tree/hooks/use-tree-mutation.ts";
 import type { SpaceTreeNode } from "@/features/page/tree/types.ts";
 import classes from "@/features/page/tree/styles/tree.module.css";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 export interface NodeMenuProps {
   node: SpaceTreeNode;
@@ -114,7 +115,7 @@ export function NodeMenu({ node, canEdit }: NodeMenuProps) {
       notifications.show({ message: t("Page duplicated successfully") });
     } catch (err: any) {
       notifications.show({
-        message: err?.response?.data?.message || "An error occurred",
+        message: getApiErrorMessage(err, t("Failed to duplicate page")),
         color: "red",
       });
     }

@@ -21,6 +21,7 @@ import {
 import { IPagination } from "@/lib/types.ts";
 import { notifications } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
 
 const PAGE_LABELS_KEY = (pageId: string) => ["page-labels", pageId];
 const WORKSPACE_LABELS_KEY = (query?: string) => ["workspace-labels", query ?? ""];
@@ -81,7 +82,7 @@ export function useAddLabelsMutation(pageId: string | undefined) {
     },
     onError: (error: any) => {
       notifications.show({
-        message: error?.response?.data?.message ?? t("Failed to add label"),
+        message: getApiErrorMessage(error, t("Failed to add label")),
         color: "red",
       });
     },

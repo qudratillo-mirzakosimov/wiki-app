@@ -30,6 +30,8 @@ import { queryClient } from "@/main.tsx";
 import { getRecentChanges } from "@/features/page/services/page-service.ts";
 import { useEffect } from "react";
 import { validate as isValidUuid } from "uuid";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
+import i18n from "@/i18n.ts";
 
 export function useGetSpacesQuery(
   params?: QueryParams,
@@ -90,7 +92,10 @@ export function useCreateSpaceMutation() {
       notifications.show({ message: t("Space created successfully") });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to create space"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -131,7 +136,10 @@ export function useUpdateSpaceMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to update space"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -185,7 +193,10 @@ export function useDeleteSpaceMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to delete space"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -220,7 +231,10 @@ export function useAddSpaceMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to add space members"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -239,7 +253,10 @@ export function useRemoveSpaceMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to remove space member"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -259,7 +276,10 @@ export function useChangeSpaceMemberRoleMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to change member role"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });

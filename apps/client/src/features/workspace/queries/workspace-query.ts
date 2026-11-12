@@ -31,6 +31,8 @@ import {
 } from "@/features/workspace/types/workspace.types.ts";
 import { IUser } from "@/features/user/types/user.types.ts";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "@/lib/api-error.ts";
+import i18n from "@/i18n.ts";
 
 export function useWorkspaceQuery(): UseQueryResult<IWorkspace, Error> {
   return useQuery({
@@ -77,7 +79,10 @@ export function useDeleteWorkspaceMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to delete member"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -100,7 +105,10 @@ export function useDeactivateWorkspaceMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to deactivate member"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -123,7 +131,10 @@ export function useActivateWorkspaceMemberMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to activate member"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -141,7 +152,10 @@ export function useChangeMemberRoleMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to change member role"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -178,7 +192,7 @@ export function useCreateInvitationMutation() {
           ? t(
               "Only workspace admins can invite people. Ask an admin to send the invitation.",
             )
-          : error["response"]?.data?.message;
+          : getApiErrorMessage(error, t("Failed to send invitation"));
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -197,7 +211,10 @@ export function useResendInvitationMutation() {
       notifications.show({ message: "Invitation resent" });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to resend invitation"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });
@@ -221,7 +238,10 @@ export function useRevokeInvitationMutation() {
       });
     },
     onError: (error) => {
-      const errorMessage = error["response"]?.data?.message;
+      const errorMessage = getApiErrorMessage(
+        error,
+        i18n.t("Failed to revoke invitation"),
+      );
       notifications.show({ message: errorMessage, color: "red" });
     },
   });

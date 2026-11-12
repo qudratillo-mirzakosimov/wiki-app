@@ -31,7 +31,7 @@ export default function SetupWorkspace() {
   if (
     isError &&
     error?.["response"]?.status === 404 &&
-    error?.["response"]?.data.message.includes("Workspace not found")
+    String(error?.["response"]?.data?.message ?? "").includes("Workspace not found")
   ) {
     return (
       <>
