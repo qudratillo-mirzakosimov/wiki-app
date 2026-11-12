@@ -4,6 +4,7 @@ import { FullEditor } from "@/features/editor/full-editor";
 import { TitleEditor } from "@/features/editor/title-editor";
 import HistoryModal from "@/features/page-history/components/history-modal";
 import { Helmet } from "react-helmet-async";
+import { getAppName } from "@/lib/config";
 import PageHeader from "@/features/page/components/header/page-header.tsx";
 import { extractPageSlugId } from "@/lib";
 import { useGetSpaceBySlugQuery } from "@/features/space/queries/space-query.ts";
@@ -111,7 +112,7 @@ function PageContent({ pageSlug }: { pageSlug: string | undefined }) {
         }}
       >
         <Helmet>
-          <title>{`${page?.icon || ""}  ${getPageTitle(page?.title, page?.isBase, t)}`}</title>
+          <title>{`${page?.icon ? `${page.icon} ` : ""}${getPageTitle(page?.title, page?.isBase, t)} - ${getAppName()}`}</title>
         </Helmet>
         <MemoizedPageHeader readOnly={!canEdit} />
         <div
@@ -160,7 +161,7 @@ function PageContent({ pageSlug }: { pageSlug: string | undefined }) {
     page && (
       <div>
         <Helmet>
-          <title>{`${page?.icon || ""}  ${getPageTitle(page?.title, page?.isBase, t)}`}</title>
+          <title>{`${page?.icon ? `${page.icon} ` : ""}${getPageTitle(page?.title, page?.isBase, t)} - ${getAppName()}`}</title>
         </Helmet>
 
         <MemoizedPageHeader readOnly={!canEdit} />

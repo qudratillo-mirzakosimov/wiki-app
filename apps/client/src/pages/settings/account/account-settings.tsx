@@ -16,9 +16,7 @@ export default function AccountSettings() {
   return (
     <>
       <Helmet>
-        <title>
-          {t("My Profile")} - {getAppName()}
-        </title>
+        <title>{`${t("My Profile")} - ${getAppName()}`}</title>
       </Helmet>
       <SettingsTitle title={t("My Profile")} />
 

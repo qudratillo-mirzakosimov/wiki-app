@@ -20,8 +20,22 @@ import { useTranslation } from "react-i18next";
 import { getInitialsColor } from "@/lib/get-initials-color";
 import PageListSkeleton from "@/components/ui/page-list-skeleton";
 import rowClasses from "@/components/ui/clickable-table-row.module.css";
+import { Helmet } from "react-helmet-async";
+import { getAppName } from "@/lib/config";
 
 export default function FavoritesPage() {
+  const { t } = useTranslation();
+  return (
+    <>
+      <Helmet>
+        <title>{`${t("Favorites")} - ${getAppName()}`}</title>
+      </Helmet>
+      <FavoritesContent />
+    </>
+  );
+}
+
+function FavoritesContent() {
   const { t } = useTranslation();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useFavoritesQuery("page");
   const favorites = data?.pages.flatMap((p) => p.items) ?? [];

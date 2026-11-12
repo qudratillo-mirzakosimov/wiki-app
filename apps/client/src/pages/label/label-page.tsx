@@ -83,9 +83,7 @@ export default function LabelPage() {
   return (
     <>
       <Helmet>
-        <title>
-          {labelName} - {getAppName()}
-        </title>
+        <title>{`${labelName} - ${getAppName()}`}</title>
       </Helmet>
 
       <Container size={820} py="xl">

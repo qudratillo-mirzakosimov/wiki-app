@@ -16,9 +16,7 @@ export default function AccountPreferences() {
   return (
     <>
       <Helmet>
-        <title>
-          {t("Preferences")} - {getAppName()}
-        </title>
+        <title>{`${t("Preferences")} - ${getAppName()}`}</title>
       </Helmet>
       <SettingsTitle title={t("Preferences")} />
 

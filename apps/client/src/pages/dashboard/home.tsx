@@ -12,9 +12,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>
-          {t("Home")} - {getAppName()}
-        </title>
+        <title>{`${t("Home")} - ${getAppName()}`}</title>
       </Helmet>
       <Container size={"900"} pt="xl">
         <HomeAiPrompt />

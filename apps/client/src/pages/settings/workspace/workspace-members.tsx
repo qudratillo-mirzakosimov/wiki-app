@@ -39,9 +39,7 @@ export default function WorkspaceMembers() {
   return (
     <>
       <Helmet>
-        <title>
-          {t("Members")} - {getAppName()}
-        </title>
+        <title>{`${t("Members")} - ${getAppName()}`}</title>
       </Helmet>
       <SettingsTitle title={t("Members")} />
 

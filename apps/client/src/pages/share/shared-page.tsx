@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { getAppName } from "@/lib/config";
 import { useTranslation } from "react-i18next";
 import { useSharePageQuery } from "@/features/share/queries/share-query.ts";
 import { Container } from "@mantine/core";
@@ -57,7 +58,7 @@ export default function SharedPage() {
   return (
     <div>
       <Helmet>
-        <title>{`${data?.page?.title || t("untitled")}`}</title>
+        <title>{`${data?.page?.title || t("untitled")} - ${getAppName()}`}</title>
         {!data?.share.searchIndexing && (
           <meta name="robots" content="noindex" />
         )}
