@@ -1,7 +1,11 @@
-import { Link, Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, link, paragraph } from '../css/styles';
-import { getGreetingName, MailBody } from '../partials/partials';
+import {
+  footnotes,
+  getGreetingName,
+  MailLayout,
+  PanelList,
+  Paragraph,
+} from '../partials/partials';
 
 interface PageUpdate {
   title: string;
@@ -20,57 +24,35 @@ export const PageUpdateDigestEmail = ({
   pageUpdates,
   totalUpdates,
 }: Props) => {
+  const pages = pageUpdates.length;
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>
-          Hi {getGreetingName(userName)},
-        </Text>
-        <Text style={paragraph}>
-          There {totalUpdates === 1 ? 'has' : 'have'} been{' '}
-          <strong>
-            {totalUpdates} update{totalUpdates === 1 ? '' : 's'}
-          </strong>{' '}
-          since your last update.
-        </Text>
-
-        {pageUpdates.map((page, i) => (
-          <Section key={i} style={pageCard}>
-            <Text style={pageTitle}>
-              <Link href={page.url} style={link}>
-                {page.title}
-              </Link>
-            </Text>
-            {page.updatedBy.length > 0 && (
-              <Text style={updatedByText}>
-                Edited by {page.updatedBy.join(', ')}
-              </Text>
-            )}
-          </Section>
-        ))}
-      </Section>
-    </MailBody>
+    <MailLayout
+      preview={`${totalUpdates} ${totalUpdates === 1 ? 'update' : 'updates'} to pages you watch.`}
+      eyebrow="Digest"
+      // "22 · Writing mechanics": numerals for stats, so "3 pages", never "three".
+      headline={`${pages} ${pages === 1 ? 'page' : 'pages'} changed`}
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi {getGreetingName(userName)},</Paragraph>
+      <Paragraph>
+        There {totalUpdates === 1 ? 'has' : 'have'} been{' '}
+        <strong>
+          {totalUpdates} {totalUpdates === 1 ? 'update' : 'updates'}
+        </strong>{' '}
+        to pages you watch since your last email.
+      </Paragraph>
+      <PanelList
+        items={pageUpdates.map((page) => ({
+          title: page.title,
+          href: page.url,
+          meta:
+            page.updatedBy.length > 0
+              ? `Edited by ${page.updatedBy.join(', ')}`
+              : undefined,
+        }))}
+      />
+    </MailLayout>
   );
-};
-
-const pageCard = {
-  borderLeft: '3px solid #e8e5ef',
-  paddingLeft: '12px',
-  marginBottom: '12px',
-};
-
-const pageTitle = {
-  ...paragraph,
-  margin: '0 0 2px 0',
-  fontSize: 14,
-  fontWeight: 'bold' as const,
-};
-
-const updatedByText = {
-  ...paragraph,
-  margin: '0',
-  fontSize: 13,
-  color: '#666',
 };
 
 export default PageUpdateDigestEmail;

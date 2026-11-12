@@ -1,7 +1,5 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { MailBody } from '../partials/partials';
+import { MailLayout, Panel, Paragraph } from '../partials/partials';
 
 interface Props {
   invitedUserName: string;
@@ -13,15 +11,21 @@ export const InvitationAcceptedEmail = ({
   invitedUserEmail,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          {invitedUserName} ({invitedUserEmail}) has accepted your invitation,
-          and is now a member of the workspace.
-        </Text>
-      </Section>
-    </MailBody>
+    <MailLayout
+      preview={`${invitedUserName} accepted your invitation.`}
+      eyebrow="New member"
+      headline="Invite accepted"
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        Your invitation was accepted. They're now a member of the workspace.
+      </Paragraph>
+      <Panel
+        label="New member"
+        title={invitedUserName}
+        meta={invitedUserEmail}
+      />
+    </MailLayout>
   );
 };
 

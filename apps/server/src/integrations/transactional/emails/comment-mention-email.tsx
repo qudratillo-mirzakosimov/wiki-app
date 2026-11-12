@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   actorName: string;
@@ -15,16 +19,19 @@ export const CommentMentionEmail = ({
   pageUrl,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> mentioned you in a comment on{' '}
-          <strong>{pageTitle}</strong>.
-        </Text>
-      </Section>
-      <EmailButton href={pageUrl}>View</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`${actorName} mentioned you in a comment on ${pageTitle}.`}
+      eyebrow="Mention"
+      headline="You're mentioned"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> mentioned you in a comment on this page.
+      </Paragraph>
+      <Panel label="Page" title={pageTitle} href={pageUrl} />
+      <EmailButton href={pageUrl}>Open comment</EmailButton>
+    </MailLayout>
   );
 };
 

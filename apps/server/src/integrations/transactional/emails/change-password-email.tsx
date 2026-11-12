@@ -1,7 +1,10 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { MailBody } from '../partials/partials';
+import {
+  footnotes,
+  getGreetingName,
+  MailLayout,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   username?: string;
@@ -9,14 +12,19 @@ interface Props {
 
 export const ChangePasswordEmail = ({ username }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi {username},</Text>
-        <Text style={paragraph}>
-          This is a confirmation that your password has been changed.
-        </Text>
-      </Section>
-    </MailBody>
+    <MailLayout
+      preview="Your password was just changed."
+      eyebrow="Security"
+      headline="Password changed"
+      footnote={footnotes.security}
+    >
+      <Paragraph>Hi {getGreetingName(username)},</Paragraph>
+      <Paragraph>This confirms that your password was changed.</Paragraph>
+      <Paragraph>
+        If you didn't make this change, reset your password right away and tell
+        your workspace admin.
+      </Paragraph>
+    </MailLayout>
   );
 };
 

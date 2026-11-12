@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   pageTitle: string;
@@ -17,17 +21,20 @@ export const VerificationExpiringEmail = ({
   expiresAt,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          The page <strong>{pageTitle}</strong> in the{' '}
-          <strong>{spaceName}</strong> space needs to be re-verified. The
-          verification expires on <strong>{expiresAt}</strong>.
-        </Text>
-      </Section>
+    <MailLayout
+      preview={`${pageTitle} needs to be re-verified by ${expiresAt}.`}
+      eyebrow="Verification"
+      headline="Re-verify soon"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        This page needs to be re-verified. Its verification expires on{' '}
+        <strong>{expiresAt}</strong>.
+      </Paragraph>
+      <Panel label={`${spaceName} space`} title={pageTitle} href={pageUrl} />
       <EmailButton href={pageUrl}>Review page</EmailButton>
-    </MailBody>
+    </MailLayout>
   );
 };
 

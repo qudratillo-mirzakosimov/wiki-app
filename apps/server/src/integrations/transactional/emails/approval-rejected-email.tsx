@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   actorName: string;
@@ -19,22 +23,24 @@ export const ApprovalRejectedEmail = ({
   comment,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> returned{' '}
-          <strong>{pageTitle}</strong> in the{' '}
-          <strong>{spaceName}</strong> space for revision.
-        </Text>
-        {comment && (
-          <Text style={{ ...paragraph, fontStyle: 'italic' }}>
-            &ldquo;{comment}&rdquo;
-          </Text>
-        )}
-      </Section>
-      <EmailButton href={pageUrl}>View page</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`${actorName} returned ${pageTitle} for revision.`}
+      eyebrow="Approval"
+      headline="Changes requested"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> returned this page for revision.
+      </Paragraph>
+      <Panel
+        label={`${spaceName} space`}
+        title={pageTitle}
+        href={pageUrl}
+        meta={comment ? <>&ldquo;{comment}&rdquo;</> : undefined}
+      />
+      <EmailButton href={pageUrl}>Open page</EmailButton>
+    </MailLayout>
   );
 };
 

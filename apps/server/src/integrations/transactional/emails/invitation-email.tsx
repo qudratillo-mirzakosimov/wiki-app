@@ -1,7 +1,5 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import { EmailButton, MailLayout, Paragraph } from '../partials/partials';
 import { getBrandName } from '../../../oss/brand';
 
 interface Props {
@@ -9,17 +7,21 @@ interface Props {
 }
 
 export const InvitationEmail = ({ inviteLink }: Props) => {
+  const brand = getBrandName();
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>You have been invited to {getBrandName()}.</Text>
-        <Text style={paragraph}>
-          Please click the button below to accept this invitation.
-        </Text>
-      </Section>
-      <EmailButton href={inviteLink}>Accept Invite</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`You're invited to ${brand}.`}
+      eyebrow="Invitation"
+      headline="Join the wiki"
+      footnote="If you weren't expecting this invitation, you can ignore this email."
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        You've been invited to <strong>{brand}</strong>, where Bolder Apps keeps
+        its SOPs, playbooks and project notes.
+      </Paragraph>
+      <EmailButton href={inviteLink}>Accept invitation</EmailButton>
+    </MailLayout>
   );
 };
 

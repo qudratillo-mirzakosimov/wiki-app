@@ -10,6 +10,8 @@ hardcode a name, logo or brand colour.
 | Logo, favicons, app icons | `apps/client/public/brand/` | Build time, or mount a directory over `/app/apps/client/dist/brand` at runtime. |
 | Brand colour, fonts | `apps/client/src/oss/brand/palette.ts` | Build time. |
 | Email sender name | `MAIL_FROM_NAME`, falls back to `APP_NAME` | Runtime. |
+| Email layout, colours | `apps/server/src/integrations/transactional/{css/styles.ts,partials/partials.tsx}` | Build time. |
+| Email images | `apps/client/public/brand/email/`, loaded from `APP_URL` | Build time; `APP_URL` at runtime. |
 
 Source of truth: the **Bolder Brand Standards** Figma file
 (`figma.com/design/yhqhkdtO3fdeTrCJj0ESDX`), imported 2026-11-11.
@@ -30,6 +32,28 @@ rendered from the SVGs with headless Chrome (16/32/512) and `sips` (192).
 limits to large text. Filled buttons therefore use shade 600 (`#E0381A`, 4.4:1) in both
 modes, and body-text links in light mode use 700 (`#B32B12`, 6.4:1). Dark-mode links use
 Mantine's shade 4 (`#FF6A51`, 5.5:1 on the dark background).
+
+## Email ("Ember" layout)
+
+All 15 transactional emails share one layout in `partials.tsx`: a black hero with the
+Ember gradient ("42 · Gradients"), the white lockup top right, a CAPS Montserrat headline
+with one orange period ("46", "47"), a 4px Horizon band, a white body with cream context
+panels, and a Bolder Orange pill button. Templates pass only words and links.
+
+- **Images are PNG/JPEG, not SVG.** Gmail and Outlook do not render SVG. `logo-horizontal-white.png`
+  (2x, shown at 114 × 18) and `hero-ember.jpg` (1120 × 520) are rendered with headless
+  Chrome from the lockup SVG and a CSS radial gradient. The glow sits low on the right so
+  neither the orange half of the logo tile nor the orange period lands on orange.
+- **URLs are absolute, built from `APP_URL`.** Each instance serves its own copy, so the
+  client instance never loads images from the internal one. Without `APP_URL` the hero
+  falls back to plain black and the logo to the word "Bolder".
+- **Outlook on Windows drops background images**; the hero shows its black base there.
+- **The button is Bolder Orange (500), not 600 as in the app**, because its label is 18px
+  bold: "43 · Accessible pairings" allows white on Bolder Orange for buttons at that size.
+- **No `rgba()` or `opacity`.** Several clients drop both, so the guide's 60% eyebrow is
+  pre-mixed into solid colours.
+- **Fonts.** Only Apple Mail and iOS load the Google Fonts link; everyone else sees Arial
+  (Arial Black for headlines), so check designs in Arial too.
 
 Defaults for the name live in `apps/server/src/oss/brand.ts` and
 `apps/client/src/lib/config.ts` (`getAppName`) — keep the two in sync.

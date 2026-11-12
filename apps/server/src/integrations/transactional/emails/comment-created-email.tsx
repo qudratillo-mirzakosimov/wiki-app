@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   actorName: string;
@@ -15,16 +19,19 @@ export const CommentCreateEmail = ({
   pageUrl,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> commented on{' '}
-          <strong>{pageTitle}</strong>.
-        </Text>
-      </Section>
-      <EmailButton href={pageUrl}>View</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`${actorName} commented on ${pageTitle}.`}
+      eyebrow="Comment"
+      headline="New comment"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> left a comment on this page.
+      </Paragraph>
+      <Panel label="Page" title={pageTitle} href={pageUrl} />
+      <EmailButton href={pageUrl}>Open comment</EmailButton>
+    </MailLayout>
   );
 };
 

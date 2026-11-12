@@ -1,7 +1,12 @@
-import { Link, Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, link, paragraph } from '../css/styles';
-import { EmailButton, getGreetingName, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  getGreetingName,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   userName: string;
@@ -19,19 +24,19 @@ export const PageUpdateEmail = ({
   spaceName,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi {getGreetingName(userName)},</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> updated{' '}
-          <Link href={pageUrl} style={link}>
-            <strong>{pageTitle}</strong>
-          </Link>{' '}
-          in the <strong>{spaceName}</strong> space.
-        </Text>
-      </Section>
-      <EmailButton href={pageUrl}>View page</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`${actorName} updated ${pageTitle}.`}
+      eyebrow="Page update"
+      headline="Page updated"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi {getGreetingName(userName)},</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> updated a page you watch.
+      </Paragraph>
+      <Panel label={`${spaceName} space`} title={pageTitle} href={pageUrl} />
+      <EmailButton href={pageUrl}>Open page</EmailButton>
+    </MailLayout>
   );
 };
 

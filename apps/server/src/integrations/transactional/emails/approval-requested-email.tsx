@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   actorName: string;
@@ -17,17 +21,19 @@ export const ApprovalRequestedEmail = ({
   pageUrl,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> submitted{' '}
-          <strong>{pageTitle}</strong> in the{' '}
-          <strong>{spaceName}</strong> space for your approval.
-        </Text>
-      </Section>
+    <MailLayout
+      preview={`${actorName} submitted ${pageTitle} for your approval.`}
+      eyebrow="Approval"
+      headline="Review requested"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> submitted this page for your approval.
+      </Paragraph>
+      <Panel label={`${spaceName} space`} title={pageTitle} href={pageUrl} />
       <EmailButton href={pageUrl}>Review page</EmailButton>
-    </MailBody>
+    </MailLayout>
   );
 };
 

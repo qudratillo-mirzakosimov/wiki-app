@@ -1,7 +1,11 @@
-import { Section, Text } from 'react-email';
 import * as React from 'react';
-import { content, paragraph } from '../css/styles';
-import { EmailButton, MailBody } from '../partials/partials';
+import {
+  EmailButton,
+  footnotes,
+  MailLayout,
+  Panel,
+  Paragraph,
+} from '../partials/partials';
 
 interface Props {
   actorName: string;
@@ -17,16 +21,20 @@ export const PermissionGrantedEmail = ({
   accessLabel,
 }: Props) => {
   return (
-    <MailBody>
-      <Section style={content}>
-        <Text style={paragraph}>Hi there,</Text>
-        <Text style={paragraph}>
-          <strong>{actorName}</strong> gave you {accessLabel} access to{' '}
-          <strong>{pageTitle}</strong>.
-        </Text>
-      </Section>
-      <EmailButton href={pageUrl}>View</EmailButton>
-    </MailBody>
+    <MailLayout
+      preview={`${actorName} gave you ${accessLabel} access to ${pageTitle}.`}
+      eyebrow="Access"
+      headline="Page shared"
+      footnote={footnotes.notification}
+    >
+      <Paragraph>Hi there,</Paragraph>
+      <Paragraph>
+        <strong>{actorName}</strong> gave you <strong>{accessLabel}</strong>{' '}
+        access to this page.
+      </Paragraph>
+      <Panel label={`${accessLabel} access`} title={pageTitle} href={pageUrl} />
+      <EmailButton href={pageUrl}>Open page</EmailButton>
+    </MailLayout>
   );
 };
 
