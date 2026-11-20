@@ -10,7 +10,8 @@ import { KyselyDB } from '@docmost/db/types/kysely.types';
 import { ApiKey, InsertableApiKey } from '@docmost/db/types/entity.types';
 
 export type ApiKeyWithCreator = ApiKey & {
-  creator: { id: string; name: string; email: string };
+  // Null when the creator's user row is gone (jsonObjectFrom yields null for no match).
+  creator: { id: string; name: string; email: string } | null;
 };
 
 @Injectable()

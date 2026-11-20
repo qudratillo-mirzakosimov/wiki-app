@@ -5,6 +5,7 @@ import * as fs from 'node:fs';
 import fastifyStatic from '@fastify/static';
 import { EnvironmentService } from '../environment/environment.service';
 import { escapeHtml, getBrandName, getSourceCodeUrl } from '../../oss/brand';
+import { isApiKeysEnabled } from '../../oss/api-key/api-key.policy';
 import { readGoogleAuthConfig } from '../../oss/google-auth/google-auth.policy';
 
 @Module({})
@@ -54,6 +55,7 @@ export class StaticModule implements OnModuleInit {
         APP_NAME: getBrandName(),
         SOURCE_CODE_URL: getSourceCodeUrl(),
         GOOGLE_AUTH_ENABLED: readGoogleAuthConfig() !== null,
+        API_KEYS_ENABLED: isApiKeysEnabled(),
       };
 
       const windowScriptContent = `<script>window.CONFIG=${JSON.stringify(configString)};</script>`;

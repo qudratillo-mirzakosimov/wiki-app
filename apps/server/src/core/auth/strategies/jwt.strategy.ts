@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { EnvironmentService } from '../../../integrations/environment/environment.service';
@@ -13,8 +13,6 @@ import { ApiKeyService } from '../../../oss/api-key/api-key.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  private logger = new Logger('JwtStrategy');
-
   constructor(
     private userRepo: UserRepo,
     private workspaceRepo: WorkspaceRepo,

@@ -114,7 +114,17 @@ export class TokenService {
       type: JwtType.API_KEY,
     };
 
-    return this.jwtService.sign(payload, expiresIn ? { expiresIn } : {});
+    // Bolder fork: the shared JwtService carries JwtModule's default expiresIn
+    // (JWT_TOKEN_EXPIRES_IN, 90d), and @nestjs/jwt merges it into every sign() call with no way
+    // to switch it off per call (jsonwebtoken rejects expiresIn: undefined). A personal API
+    // key's lifetime lives in api_keys.expires_at alone; a baked-in exp would silently end
+    // "1y" and "never" keys at 90 days. So keys are signed by a JwtService that has the same
+    // secret and issuer but no default expiry.
+    const signer = new JwtService({
+      secret: this.environmentService.getAppSecret(),
+      signOptions: { issuer: 'Docmost' },
+    });
+    return signer.sign(payload, expiresIn ? { expiresIn } : {});
   }
 
   async generatePdfRenderToken(
