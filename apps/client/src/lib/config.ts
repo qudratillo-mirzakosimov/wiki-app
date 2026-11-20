@@ -25,6 +25,11 @@ export function isGoogleAuthEnabled(): boolean {
   return castToBoolean(getConfigValue("GOOGLE_AUTH_ENABLED"));
 }
 
+// Bolder fork: true when the server runs with API_KEYS_ENABLED=true (personal API keys).
+export function isApiKeysEnabled(): boolean {
+  return castToBoolean(getConfigValue("API_KEYS_ENABLED"));
+}
+
 export function getAppUrl(): string {
   return `${window.location.protocol}//${window.location.host}`;
 }

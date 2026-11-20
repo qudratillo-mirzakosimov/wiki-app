@@ -19,7 +19,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import classes from "./settings.module.css";
 import { useTranslation } from "react-i18next";
-import { isCloud } from "@/lib/config.ts";
+import { isApiKeysEnabled, isCloud } from "@/lib/config.ts";
 import useUserRole from "@/hooks/use-user-role.tsx";
 import { useAtom } from "jotai";
 import { entitlementAtom } from "@/ee/entitlement/entitlement-atom";
@@ -160,6 +160,8 @@ export default function SettingsSidebar() {
   const canShowItem = (item: DataItem) => {
     if (item.env === "cloud" && !isCloud()) return false;
     if (item.env === "selfhosted" && isCloud()) return false;
+    // API keys are switched by the server's API_KEYS_ENABLED, not by a licence.
+    if (item.feature === Feature.API_KEYS && !isApiKeysEnabled()) return false;
     if (item.role === "admin" && !isAdmin) return false;
     if (item.role === "owner" && !isOwner) return false;
     return true;
@@ -167,6 +169,7 @@ export default function SettingsSidebar() {
 
   const isItemDisabled = (item: DataItem) => {
     if (!item.feature) return false;
+    if (item.feature === Feature.API_KEYS) return false;
     return !hasFeature(item.feature);
   };
 

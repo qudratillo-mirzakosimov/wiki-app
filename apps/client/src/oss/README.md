@@ -15,10 +15,15 @@ AGPL-3.0, exposing only the names core imports:
 - routed Enterprise pages redirect to `/home`;
 - Enterprise widgets render nothing; mutations are inert.
 
-One exception does real work: `page-permission/index.ts` maps `PageShareModal` to
-the core `features/share/components/share-modal.tsx`. Upstream moved the Community
-"Share → Publish to web" button inside the Enterprise modal (commit `59e94556`) but
-left the original core modal in the tree, unused.
+Two exceptions do real work:
+
+- `page-permission/index.ts` maps `PageShareModal` to the core
+  `features/share/components/share-modal.tsx`. Upstream moved the Community
+  "Share → Publish to web" button inside the Enterprise modal (commit `59e94556`) but
+  left the original core modal in the tree, unused.
+- `api-key/` re-exports the personal API key screens and `getApiKeys` from
+  `oss/api-key/` (own code, backed by `apps/server/src/oss/api-key/`). The pages and
+  sidebar entries only appear when the server runs with `API_KEYS_ENABLED=true`.
 
 **Never copy code from upstream `src/ee/` into this directory.** Write it fresh.
 
