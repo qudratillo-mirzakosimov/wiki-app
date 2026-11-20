@@ -45,6 +45,11 @@ Rules:
   workspace is 404.
 - Every endpoint answers 403 when the request itself was authenticated by a key
   (`req.raw.apiKeyId`, set by `JwtStrategy`), so a leaked key cannot mint or revoke keys.
+- `POST /api/auth/collab-token` is refused (403) for a key-authenticated request
+  (`refuseApiKeyAuth`, `refuse-api-key-auth.ts`, called from `auth.controller.ts`). The
+  collaboration JWT it mints lives 24h and Hocuspocus never re-checks the `api_keys` row, so a
+  key allowed to mint one would keep editing for a day after revocation. Nothing a key can mint
+  may outlive the key. `collab-token.guard.spec.ts` guards the call.
 
 ## How a key is checked
 
@@ -67,6 +72,8 @@ guards this.
 - `api-key.repo.ts`: queries on `api_keys`.
 - `api-key.service.ts`: validation, create, list, revoke.
 - `api-key.controller.ts`, `dto/api-key.dto.ts`: the endpoints.
-- `api-key.module.ts`: wiring, imported by `AuthModule` and `CoreModule`.
+- `refuse-api-key-auth.ts`: 403 helper for core routes that must not accept a key.
+- `api-key.module.ts`: wiring, imported by `AuthModule` (which `CoreModule` imports, so the
+  controller is registered once).
 
 Tests: `pnpm --filter server exec jest src/oss/api-key`.

@@ -25,7 +25,6 @@ import { FavoriteModule } from './favorite/favorite.module';
 import { SessionModule } from './session/session.module';
 import { ClsMiddleware } from 'nestjs-cls';
 import { GoogleAuthModule } from '../oss/google-auth/google-auth.module';
-import { ApiKeyModule } from '../oss/api-key/api-key.module';
 
 @Module({
   imports: [
@@ -48,7 +47,6 @@ import { ApiKeyModule } from '../oss/api-key/api-key.module';
     SessionModule,
     // Bolder fork
     GoogleAuthModule,
-    ApiKeyModule,
   ],
 })
 export class CoreModule implements NestModule {

@@ -6,7 +6,7 @@
 import { Module } from '@nestjs/common';
 import { TokenModule } from '../../core/auth/token.module';
 // Side-effect import, on purpose. The `controllers` list below is decided when this file is
-// first evaluated, which for CoreModule happens before AppModule reaches EnvironmentModule.
+// first evaluated, which for AuthModule happens before AppModule reaches EnvironmentModule.
 // Importing it first runs ConfigModule.forRoot(), so API_KEYS_ENABLED from a .env file is
 // already in process.env when the switch is read (real environment variables always are).
 import '../../integrations/environment/environment.module';

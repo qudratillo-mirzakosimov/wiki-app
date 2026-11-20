@@ -32,6 +32,7 @@ import { VerifyUserTokenDto } from './dto/verify-user-token.dto';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { validateSsoEnforcement } from './auth.util';
 import { ModuleRef } from '@nestjs/core';
+import { refuseApiKeyAuth } from '../../oss/api-key/refuse-api-key-auth';
 import { AuditEvent, AuditResource } from '../../common/events/audit-events';
 import {
   AUDIT_SERVICE,
@@ -188,7 +189,10 @@ export class AuthController {
   async collabToken(
     @AuthUser() user: User,
     @AuthWorkspace() workspace: Workspace,
+    @Req() req: FastifyRequest,
   ) {
+    // Bolder fork: a 24h collab JWT would outlive a revoked API key.
+    refuseApiKeyAuth(req);
     return this.authService.getCollabToken(user, workspace.id);
   }
 

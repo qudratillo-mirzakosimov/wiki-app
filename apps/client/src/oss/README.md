@@ -32,3 +32,14 @@ Two exceptions do real work:
 1. Delete `apps/client/src/ee`, `packages/ee`, `apps/server/src/ee` and `.gitmodules` again.
 2. `pnpm --filter client exec tsc --noEmit` — a missing shim shows up as TS2307.
 3. Grep core for relative imports (`from "../../ee/`) — the alias cannot catch those.
+4. **Bolder fork core touch points.** The personal API keys feature edits these core files, so
+   an upstream merge can silently overwrite them. Re-check each against `oss/api-key/`:
+   - server: `core/auth/strategies/jwt.strategy.ts` (calls `ApiKeyService.validateApiKey`, sets
+     `req.raw.apiKeyId`), `core/auth/services/token.service.ts` (dedicated no-`exp` signer for key
+     tokens), `core/auth/auth.module.ts` (imports `ApiKeyModule`), `core/auth/auth.controller.ts`
+     (collab-token refuses keys), `integrations/static/static.module.ts` (`API_KEYS_ENABLED` in
+     `window.CONFIG`);
+   - client: `components/settings/settings-sidebar.tsx`, `lib/config.ts`.
+
+   Then run `pnpm --filter server exec jest src/oss/api-key` after every upstream merge (it
+   catches a returned 90-day `exp` and a dropped collab-token refusal).
