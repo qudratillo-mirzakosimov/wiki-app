@@ -9,7 +9,7 @@ import { UserSessionRepo } from '@docmost/db/repos/session/user-session.repo';
 import { SessionActivityService } from '../../session/session-activity.service';
 import { FastifyRequest } from 'fastify';
 import { extractBearerTokenFromHeader, isUserDisabled } from '../../../common/helpers';
-import { ModuleRef } from '@nestjs/core';
+import { ApiKeyService } from '../../../oss/api-key/api-key.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     private userSessionRepo: UserSessionRepo,
     private sessionActivityService: SessionActivityService,
     private readonly environmentService: EnvironmentService,
-    private moduleRef: ModuleRef,
+    private readonly apiKeyService: ApiKeyService,
   ) {
     super({
       jwtFromRequest: (req: FastifyRequest) => {
@@ -74,29 +74,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     return { user, workspace };
   }
 
+  // Bolder fork: replaces the Enterprise module lookup with the fork's own validator.
   private async validateApiKey(req: any, payload: JwtApiKeyPayload) {
-    let ApiKeyModule: any;
-    let isApiKeyModuleReady = false;
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      ApiKeyModule = require('./../../../ee/api-key/api-key.service');
-      isApiKeyModuleReady = true;
-    } catch (err) {
-      this.logger.debug(
-        'API Key module requested but enterprise module not bundled in this build',
-      );
-      isApiKeyModuleReady = false;
-    }
-
-    if (isApiKeyModuleReady) {
-      const ApiKeyService = this.moduleRef.get(ApiKeyModule.ApiKeyService, {
-        strict: false,
-      });
-
-      return ApiKeyService.validateApiKey(payload);
-    }
-
-    throw new UnauthorizedException('Enterprise API Key module missing');
+    const result = await this.apiKeyService.validateApiKey(payload);
+    // Lets the key endpoints refuse a request that authenticated with a key.
+    req.raw.apiKeyId = payload.apiKeyId;
+    return result;
   }
 }
