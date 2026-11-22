@@ -3,11 +3,15 @@ import { z } from "zod/v4";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import useAuth from "@/features/auth/hooks/use-auth";
-import { Box, Button, Container, Text, TextInput, Title } from "@mantine/core";
-import classes from "./auth.module.css";
+import { Button, TextInput } from "@mantine/core";
 import { useRedirectIfAuthenticated } from "@/features/auth/hooks/use-redirect-if-authenticated.ts";
-import { useTranslation } from "react-i18next";
-import { AuthLayout } from "./auth-layout.tsx";
+import { Trans, useTranslation } from "react-i18next";
+import {
+  AuthHeading,
+  AuthLayout,
+  AuthStatusRing,
+  BackToSignIn,
+} from "./auth-layout.tsx";
 
 const formSchema = z.object({
   email: z
@@ -19,7 +23,9 @@ type FormValues = z.infer<typeof formSchema>;
 export function ForgotPasswordForm() {
   const { t } = useTranslation();
   const { forgotPassword, isLoading } = useAuth();
-  const [isTokenSent, setIsTokenSent] = useState<boolean>(false);
+  // Bolder fork: the address the link went to, kept so the confirmation can name it. Null means
+  // the form is showing; the old boolean could not say which address to repeat back.
+  const [sentTo, setSentTo] = useState<string | null>(null);
   useRedirectIfAuthenticated();
 
   const form = useForm<FormValues>({
@@ -31,46 +37,73 @@ export function ForgotPasswordForm() {
 
   async function onSubmit(data: FormValues) {
     if (await forgotPassword(data)) {
-      setIsTokenSent(true);
+      setSentTo(data.email);
     }
+  }
+
+  function useDifferentEmail() {
+    form.reset();
+    setSentTo(null);
+  }
+
+  if (sentTo !== null) {
+    return (
+      <AuthLayout>
+        <AuthStatusRing tone="brand" symbol="check" />
+        <AuthHeading
+          title={t("Check your inbox")}
+          subtitle={
+            <Trans
+              i18nKey="If <b>{{email}}</b> has an account, a reset link is on its way. It can take a minute. Check spam too."
+              values={{ email: sentTo }}
+              components={{ b: <b /> }}
+            />
+          }
+        />
+        <Button
+          variant="default"
+          radius="xl"
+          fullWidth
+          onClick={useDifferentEmail}
+        >
+          {t("Use a different email")}
+        </Button>
+        <BackToSignIn />
+      </AuthLayout>
+    );
   }
 
   return (
     <AuthLayout>
-    <Container size={420} className={classes.container}>
-      <Box p="xl" className={classes.containerBox}>
-        <Title order={2} ta="center" fw={500} mb="md">
-          {t("Forgot password")}
-        </Title>
+      <AuthHeading
+        title={t("Forgot your password?")}
+        subtitle={t(
+          "Enter your email and we'll send you a link to set a new one.",
+        )}
+      />
 
-        <form onSubmit={form.onSubmit(onSubmit)}>
-          {!isTokenSent && (
-            <TextInput
-              id="email"
-              type="email"
-              label="Email"
-              placeholder="email@example.com"
-              variant="filled"
-              {...form.getInputProps("email")}
-            />
-          )}
+      <form onSubmit={form.onSubmit(onSubmit)}>
+        <TextInput
+          id="email"
+          type="email"
+          label={t("Email")}
+          placeholder="email@example.com"
+          variant="default"
+          radius="md"
+          {...form.getInputProps("email")}
+        />
 
-          {isTokenSent && (
-            <Text>
-              {t(
-                "A password reset link has been sent to your email. Please check your inbox.",
-              )}
-            </Text>
-          )}
-
-          {!isTokenSent && (
-            <Button type="submit" fullWidth mt="xl" loading={isLoading}>
-              {t("Send reset link")}
-            </Button>
-          )}
-        </form>
-      </Box>
-    </Container>
+        <Button
+          type="submit"
+          fullWidth
+          radius="xl"
+          mt="lg"
+          loading={isLoading}
+        >
+          {t("Send reset link")}
+        </Button>
+      </form>
+      <BackToSignIn />
     </AuthLayout>
   );
 }
