@@ -1,11 +1,134 @@
-.logo {
-    margin-top: 80px;
+/* Bolder fork: the "Ember split" auth layout. The panel colours are literal brand values, not
+   theme variables, because the panel must stay black in light and dark mode alike. */
+
+.split {
+    min-height: 100dvh;
+    display: flex;
+    background: var(--mantine-color-body);
 
     @media (max-width: $mantine-breakpoint-sm) {
-        margin-top: 30px;
+        flex-direction: column;
     }
 }
 
+.panel {
+    flex: 0 0 44%;
+    /* Sticky and viewport-tall: a long form scrolls the page while the panel stays put, and the
+       panel never grows past the screen. */
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 40px 48px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    color: #fff;
+    background: radial-gradient(120% 90% at 90% 105%, #FF4626 0%, #801204 32%, #0b0b0b 68%, #000 100%);
+
+    /* On a phone the panel becomes a short strip above the form: lockup and headline only. */
+    @media (max-width: $mantine-breakpoint-sm) {
+        flex: none;
+        position: static;
+        height: auto;
+        min-height: 90px;
+        padding: 16px 20px;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+}
+
+.lockup {
+    display: block;
+    width: 120px;
+    height: auto;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 96px;
+    }
+}
+
+.label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C9B9B4;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        display: none;
+    }
+}
+
+.headline {
+    margin: 10px 0 0;
+    font-family: var(--mantine-font-family-headings);
+    font-weight: 800;
+    font-size: clamp(32px, 3.6vw, 56px);
+    line-height: 1.05;
+    text-transform: uppercase;
+    /* LOGIN_HEADLINE is operator-supplied; a long word must wrap rather than push the page wide. */
+    overflow-wrap: anywhere;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        margin: 0;
+        font-size: 22px;
+    }
+}
+
+.period {
+    color: #FF4626;
+}
+
+.formColumn {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--mantine-color-body);
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 24px 16px 32px;
+        justify-content: flex-start;
+    }
+}
+
+.formInner {
+    width: 100%;
+    max-width: 360px;
+}
+
+.heading {
+    margin-bottom: var(--mantine-spacing-lg);
+}
+
+.ring {
+    width: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    &[data-tone="brand"] {
+        color: var(--mantine-primary-color-6);
+    }
+
+    &[data-tone="muted"] {
+        color: var(--mantine-color-dimmed);
+    }
+}
+
+/* Still used by the login, forgot, reset, invite and setup forms until they move to AuthHeading. */
 .container {
     box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 45px 4px;
     border-radius: 4px;
@@ -22,5 +145,3 @@
 .containerBox {
     margin-top: 40px;
 }
-
-
