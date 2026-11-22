@@ -43,6 +43,9 @@ describe("PasswordReset page", () => {
     expect(
       screen.getByRole("link", { name: "Send a new link" }).getAttribute("href"),
     ).toBe("/forgot-password");
+    expect(
+      screen.getByRole("link", { name: /Back to sign in/ }).getAttribute("href"),
+    ).toBe("/login");
   });
 
   it("shows the expired screen when the token is missing", () => {

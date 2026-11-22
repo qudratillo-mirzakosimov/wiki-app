@@ -41,7 +41,7 @@ export function ForgotPasswordForm() {
     }
   }
 
-  function useDifferentEmail() {
+  function handleUseDifferentEmail() {
     form.reset();
     setSentTo(null);
   }
@@ -64,7 +64,7 @@ export function ForgotPasswordForm() {
           variant="default"
           radius="xl"
           fullWidth
-          onClick={useDifferentEmail}
+          onClick={handleUseDifferentEmail}
         >
           {t("Use a different email")}
         </Button>

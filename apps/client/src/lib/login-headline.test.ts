@@ -29,4 +29,9 @@ describe("getLoginHeadline", () => {
     process.env.LOGIN_HEADLINE = "OUR CLIENT GUIDE..";
     expect(getLoginHeadline()).toBe("OUR CLIENT GUIDE");
   });
+
+  it("drops trailing periods and whitespace together", () => {
+    process.env.LOGIN_HEADLINE = "GUIDE. .";
+    expect(getLoginHeadline()).toBe("GUIDE");
+  });
 });

@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>{`${t("Login")} - ${getAppName()}`}</title>
+        <title>{`${t("Sign in")} - ${getAppName()}`}</title>
       </Helmet>
       <LoginForm />
     </>

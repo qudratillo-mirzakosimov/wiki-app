@@ -1,8 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, screen } from "@testing-library/react";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { renderWithProviders } from "@/test/render";
+import { useGetInvitationQuery } from "@/features/workspace/queries/workspace-query.ts";
 import { InviteSignUpForm } from "./invite-sign-up-form";
 import { SetupWorkspaceForm } from "./setup-workspace-form";
 
@@ -24,16 +25,42 @@ vi.mock("@/features/auth/hooks/use-redirect-if-authenticated.ts", () => ({
   useRedirectIfAuthenticated: () => {},
 }));
 vi.mock("@/features/workspace/queries/workspace-query.ts", () => ({
-  useGetInvitationQuery: () => ({
-    data: { id: "inv-1", email: "new@bolderapps.com", enforceSso: false },
-    isError: false,
-  }),
+  useGetInvitationQuery: vi.fn(),
 }));
+
+const invitationQuery = vi.mocked(useGetInvitationQuery);
+
+function mockInvitation(state: { data?: unknown; isError: boolean }) {
+  invitationQuery.mockReturnValue(state as ReturnType<
+    typeof useGetInvitationQuery
+  >);
+}
 
 // The panel is the shared AuthLayout; these only prove the two forms still render inside it with
 // every field and their existing title as the page's h1.
 describe("InviteSignUpForm", () => {
+  beforeEach(() =>
+    mockInvitation({
+      data: { id: "inv-1", email: "new@bolderapps.com", enforceSso: false },
+      isError: false,
+    }),
+  );
   afterEach(cleanup);
+
+  it("brands the screen for an invalid, used or revoked invitation", () => {
+    mockInvitation({ data: undefined, isError: true });
+    renderWithProviders(<InviteSignUpForm />);
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "This invitation no longer works",
+      }),
+    ).toBeTruthy();
+    expect(screen.getByRole("complementary")).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /Back to sign in/ }).getAttribute("href"),
+    ).toBe("/login");
+  });
 
   it("keeps its fields and title inside the Ember layout", () => {
     renderWithProviders(<InviteSignUpForm />);

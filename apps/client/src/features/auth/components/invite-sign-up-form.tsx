@@ -10,7 +10,12 @@ import { useGetInvitationQuery } from "@/features/workspace/queries/workspace-qu
 import { useRedirectIfAuthenticated } from "@/features/auth/hooks/use-redirect-if-authenticated.ts";
 import { useTranslation } from "react-i18next";
 import SsoLogin from "@/ee/components/sso-login.tsx";
-import { AuthHeading, AuthLayout } from "./auth-layout.tsx";
+import {
+  AuthHeading,
+  AuthLayout,
+  AuthStatusRing,
+  BackToSignIn,
+} from "./auth-layout.tsx";
 
 const formSchema = z.object({
   name: z.string().trim().min(1),
@@ -50,7 +55,18 @@ export function InviteSignUpForm() {
   }
 
   if (isError) {
-    return <div>{t("invalid invitation link")}</div>;
+    return (
+      <AuthLayout>
+        <AuthStatusRing tone="muted" symbol="alert" />
+        <AuthHeading
+          title={t("This invitation no longer works")}
+          subtitle={t(
+            "It may have been used already or revoked. Ask an admin for a new one, or sign in if you already joined.",
+          )}
+        />
+        <BackToSignIn />
+      </AuthLayout>
+    );
   }
 
   if (!invitation) {

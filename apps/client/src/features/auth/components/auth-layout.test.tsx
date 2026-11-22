@@ -35,7 +35,9 @@ describe("AuthLayout", () => {
       "OUR CLIENT GUIDE.",
     );
     expect(screen.getByText("Bolder Apps Client Guide")).toBeTruthy();
-    const lockup = screen.getByRole("img", { name: "Bolder Apps Client Guide" });
+    // Decorative: the label above carries the instance name, so the image must not repeat it.
+    const lockup = document.querySelector("aside img")!;
+    expect(lockup.getAttribute("alt")).toBe("");
     expect(lockup.getAttribute("src")).toBe("/brand/logo-horizontal-white.svg");
   });
 

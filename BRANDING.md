@@ -70,7 +70,8 @@ form on the right.
   variables. The form column follows the light/dark theme.
 - **One orange period.** The headline is CAPS Montserrat, and the layout adds the single
   Bolder Orange period itself ("46", "47"). `LOGIN_HEADLINE` is read with trailing
-  periods stripped, so `LOGIN_HEADLINE="Our wiki."` gives `OUR WIKI.` with one period.
+  periods stripped, so `LOGIN_HEADLINE="Our wiki."` gives `OUR WIKI.` with one period. The layout always appends a period, so do not
+  end `LOGIN_HEADLINE` with `!` or `?` (it would render `WOW!.`).
 - **Google button.** Shown only when Google sign-in is configured, with Google's own
   four-colour "G" (`oss/brand/google-g-icon.tsx`), not a recoloured one: Google's brand
   rules do not allow it. The line "Use your Bolder Google account." appears with it.
@@ -94,6 +95,9 @@ the contrast notes above.
   `__APP_NAME__` in `index.html` (tab title, iOS home-screen title) and rewrites
   `manifest.json` at boot. Client code calls `getAppName()`.
 - **Dev server**: a small Vite plugin in `vite.config.ts` does the `__APP_NAME__` swap.
+- **`LOGIN_HEADLINE`** takes the same route as `APP_NAME`: the server puts it into
+  `window.CONFIG` (and the Vite `define` carries it in dev), and client code calls
+  `getLoginHeadline()`.
 
 ## Deliberately not changed
 

@@ -2,9 +2,9 @@
    theme variables, because the panel must stay black in light and dark mode alike. */
 
 .split {
+    min-height: 100vh;
     min-height: 100dvh;
     display: flex;
-    background: var(--mantine-color-body);
 
     @media (max-width: $mantine-breakpoint-sm) {
         flex-direction: column;
@@ -17,6 +17,7 @@
        panel never grows past the screen. */
     position: sticky;
     top: 0;
+    height: 100vh;
     height: 100dvh;
     min-width: 0;
     box-sizing: border-box;

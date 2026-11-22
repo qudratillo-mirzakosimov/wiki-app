@@ -16,10 +16,10 @@ export function getAppName(): string {
 }
 
 // Bolder fork: the big line on the sign-in panel. The layout appends the closing period itself, so
-// trailing periods are stripped. Keep the rules and the fallback in sync with getLoginHeadline in
-// apps/server/src/oss/brand.ts.
+// trailing periods (and whitespace around them) are stripped. Keep the rules and the fallback in
+// sync with getLoginHeadline in apps/server/src/oss/brand.ts.
 export function getLoginHeadline(): string {
-  const value = getConfigValue("LOGIN_HEADLINE")?.trim().replace(/\.+$/, "").trim();
+  const value = getConfigValue("LOGIN_HEADLINE")?.trim().replace(/[.\s]+$/, "");
   return value || "EVERYTHING WE KNOW";
 }
 

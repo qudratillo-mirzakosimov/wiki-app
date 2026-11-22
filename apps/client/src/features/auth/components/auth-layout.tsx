@@ -12,6 +12,7 @@ type AuthLayoutProps = {
 // Bolder fork: the "Ember split". A black brand panel that is identical on every auth page and in
 // both colour schemes, beside a form column that follows the theme. The panel stays in the
 // accessibility tree on purpose: the instance name and headline tell a visitor which wiki this is.
+// The lockup image is decorative (alt=""): the label beside it already says the instance name.
 export function AuthLayout({ children }: AuthLayoutProps) {
   const appName = getAppName();
   return (
@@ -20,7 +21,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         <img
           className={classes.lockup}
           src="/brand/logo-horizontal-white.svg"
-          alt={appName}
+          alt=""
         />
         <div>
           <div className={classes.label}>{appName}</div>
