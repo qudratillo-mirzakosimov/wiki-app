@@ -4,7 +4,12 @@ import { join } from 'path';
 import * as fs from 'node:fs';
 import fastifyStatic from '@fastify/static';
 import { EnvironmentService } from '../environment/environment.service';
-import { escapeHtml, getBrandName, getSourceCodeUrl } from '../../oss/brand';
+import {
+  escapeHtml,
+  getBrandName,
+  getLoginHeadline,
+  getSourceCodeUrl,
+} from '../../oss/brand';
 import { isApiKeysEnabled } from '../../oss/api-key/api-key.policy';
 import { readGoogleAuthConfig } from '../../oss/google-auth/google-auth.policy';
 
@@ -53,6 +58,7 @@ export class StaticModule implements OnModuleInit {
         POSTHOG_HOST: this.environmentService.getPostHogHost(),
         POSTHOG_KEY: this.environmentService.getPostHogKey(),
         APP_NAME: getBrandName(),
+        LOGIN_HEADLINE: getLoginHeadline(),
         SOURCE_CODE_URL: getSourceCodeUrl(),
         GOOGLE_AUTH_ENABLED: readGoogleAuthConfig() !== null,
         API_KEYS_ENABLED: isApiKeysEnabled(),

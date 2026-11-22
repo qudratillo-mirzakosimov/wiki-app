@@ -11,6 +11,15 @@ export function getBrandName(): string {
   return process.env.APP_NAME?.trim() || DEFAULT_APP_NAME;
 }
 
+// Big text on the sign-in panel. The layout appends the closing period itself so every instance
+// ends on one; a value that already carries periods would render "GUIDE.." — strip them here.
+export const DEFAULT_LOGIN_HEADLINE = 'EVERYTHING WE KNOW';
+
+export function getLoginHeadline(): string {
+  const value = process.env.LOGIN_HEADLINE?.trim().replace(/\.+$/, '').trim();
+  return value || DEFAULT_LOGIN_HEADLINE;
+}
+
 // AGPL-3.0 §13: users interacting with a modified version over a network must be offered
 // its source. Unset hides the link — acceptable for local dev, not for production.
 export function getSourceCodeUrl(): string | undefined {
