@@ -6,6 +6,7 @@ hardcode a name, logo or brand colour.
 | What | Where | When it applies |
 |---|---|---|
 | Product name | `APP_NAME` env var (server) | Runtime. Per instance, no rebuild. |
+| Sign-in headline | `LOGIN_HEADLINE` env var (server) | Runtime. Per instance, no rebuild. Default `EVERYTHING WE KNOW`. |
 | AGPL source link | `SOURCE_CODE_URL` env var (server) | Runtime. Shown next to the version in Settings. |
 | Logo, favicons, app icons | `apps/client/public/brand/` | Build time, or mount a directory over `/app/apps/client/dist/brand` at runtime. |
 | Brand colour, fonts | `apps/client/src/oss/brand/palette.ts` | Build time. |
@@ -18,8 +19,8 @@ Source of truth: the **Bolder Brand Standards** Figma file
 
 | Item | From Figma | Here |
 |---|---|---|
-| Mark | Assets → `Logo/Tile` | `public/brand/logo.svg` (header, login, SVG favicon) |
-| Lockups | Assets → `Logo/Horizontal/White`, `/Black` | `public/brand/logo-horizontal-{white,black}.svg` (not used in the UI yet) |
+| Mark | Assets → `Logo/Tile` | `public/brand/logo.svg` (header, SVG favicon) |
+| Lockups | Assets → `Logo/Horizontal/White`, `/Black` | `public/brand/logo-horizontal-{white,black}.svg` (white: the sign-in panel; black: not used in the UI yet) |
 | Favicon | "35 · App icon": flat tile, no gradient | `favicon-16x16.png`, `favicon-32x32.png` (tile minimum is 16 px, "30 · Minimum size") |
 | App icon | "35 · App icon": tile on black | `app-icon-{192,512}.png`, tile at about 60% width. The Ember gradient behind it is left out. |
 | Colour | "41 · Tints": orange 50..900 | `src/oss/brand/palette.ts`, one-to-one onto Mantine's ten shades |
@@ -58,11 +59,28 @@ panels, and a Bolder Orange pill button. Templates pass only words and links.
 Defaults for the name live in `apps/server/src/oss/brand.ts` and
 `apps/client/src/lib/config.ts` (`getAppName`) — keep the two in sync.
 
+## Sign-in pages (Ember split)
+
+Every sign-in and password page (sign-in, forgot, reset, invite sign-up, setup) shares one
+layout in `features/auth/components/auth-layout.tsx`: a black brand panel on the left, the
+form on the right.
+
+- **The panel is the same in light and dark mode**: the Ember gradient, the white lockup,
+  the instance name and the headline. Its colours are literal brand values, not theme
+  variables. The form column follows the light/dark theme.
+- **One orange period.** The headline is CAPS Montserrat, and the layout adds the single
+  Bolder Orange period itself ("46", "47"). `LOGIN_HEADLINE` is read with trailing
+  periods stripped, so `LOGIN_HEADLINE="Our wiki."` gives `OUR WIKI.` with one period.
+- **Google button.** Shown only when Google sign-in is configured, with Google's own
+  four-colour "G" (`oss/brand/google-g-icon.tsx`), not a recoloured one: Google's brand
+  rules do not allow it. The line "Use your Bolder Google account." appears with it.
+- **On a phone** the panel shrinks to a strip above the form: lockup and headline.
+
 ## Swapping assets
 
 Replace the files and keep their names:
 
-- `logo.svg`: square mark, used in the header, the login page and as the SVG favicon
+- `logo.svg`: square mark, used in the header and as the SVG favicon
 - `favicon-16x16.png`, `favicon-32x32.png`
 - `app-icon-192x192.png`, `app-icon-512x512.png`: PWA and apple-touch icon
 
