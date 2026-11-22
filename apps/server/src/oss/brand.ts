@@ -12,11 +12,12 @@ export function getBrandName(): string {
 }
 
 // Big text on the sign-in panel. The layout appends the closing period itself so every instance
-// ends on one; a value that already carries periods would render "GUIDE.." — strip them here.
+// ends on one; a value that already carries periods would render "GUIDE.." — strip them (and any
+// whitespace between or after them, so "GUIDE. ." is "GUIDE") here.
 export const DEFAULT_LOGIN_HEADLINE = 'EVERYTHING WE KNOW';
 
 export function getLoginHeadline(): string {
-  const value = process.env.LOGIN_HEADLINE?.trim().replace(/\.+$/, '').trim();
+  const value = process.env.LOGIN_HEADLINE?.trim().replace(/[.\s]+$/, '');
   return value || DEFAULT_LOGIN_HEADLINE;
 }
 
@@ -33,4 +34,20 @@ export function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// Bolder fork: puts window.CONFIG into index.html. Several values are operator-set free text
+// (APP_NAME, LOGIN_HEADLINE), so two things must not be left to chance:
+//  - String.replace treats $', $`, $& and $$ in a *string* replacement specially (LOGIN_HEADLINE
+//    "WE SAVE $' FOR YOU" would copy the rest of index.html into the script), so a function is used.
+//  - JSON.stringify leaves "</script>" intact, which would end the tag early; every "<" is written as the six
+//    characters backslash-u-0-0-3-c, which JSON.parse reads back as "<".
+export function injectWindowConfig(
+  html: string,
+  marker: string,
+  config: Record<string, unknown>,
+): string {
+  const json = JSON.stringify(config).replace(/</g, '\\u003c');
+  const script = `<script>window.CONFIG=${json};</script>`;
+  return html.replace(marker, () => script);
 }

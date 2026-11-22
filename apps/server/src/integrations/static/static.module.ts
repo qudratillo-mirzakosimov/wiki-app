@@ -9,6 +9,7 @@ import {
   getBrandName,
   getLoginHeadline,
   getSourceCodeUrl,
+  injectWindowConfig,
 } from '../../oss/brand';
 import { isApiKeysEnabled } from '../../oss/api-key/api-key.policy';
 import { readGoogleAuthConfig } from '../../oss/google-auth/google-auth.policy';
@@ -64,17 +65,17 @@ export class StaticModule implements OnModuleInit {
         API_KEYS_ENABLED: isApiKeysEnabled(),
       };
 
-      const windowScriptContent = `<script>window.CONFIG=${JSON.stringify(configString)};</script>`;
-
       if (!fs.existsSync(indexTemplateFilePath)) {
         fs.copyFileSync(indexFilePath, indexTemplateFilePath);
       }
 
       const html = fs.readFileSync(indexTemplateFilePath, 'utf8');
       // Bolder fork: index.html carries __APP_NAME__ in <title> and the apple title meta.
-      const transformedHtml = html
-        .replace(windowVar, windowScriptContent)
-        .replaceAll('__APP_NAME__', escapeHtml(getBrandName()));
+      const transformedHtml = injectWindowConfig(
+        html,
+        windowVar,
+        configString,
+      ).replaceAll('__APP_NAME__', escapeHtml(getBrandName()));
 
       writeBrandedManifest(clientDistPath);
 
