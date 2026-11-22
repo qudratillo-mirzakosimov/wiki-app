@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
     POSTHOG_HOST,
     POSTHOG_KEY,
     APP_NAME,
+    LOGIN_HEADLINE,
     SOURCE_CODE_URL,
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
@@ -37,6 +38,7 @@ export default defineConfig(({ mode }) => {
         POSTHOG_HOST,
         POSTHOG_KEY,
         APP_NAME,
+        LOGIN_HEADLINE,
         SOURCE_CODE_URL,
         // Only the on/off flag reaches the browser, never the Google credentials.
         GOOGLE_AUTH_ENABLED: String(

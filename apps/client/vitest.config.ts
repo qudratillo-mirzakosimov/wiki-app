@@ -13,5 +13,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: [],
+    // Bolder fork: @/lib/config pulls in @docmost/editor-ext -> docx, which reads localStorage at
+    // import time; Node 25+ prints an ExperimentalWarning for that on every worker. Not ours to fix.
+    execArgv: ['--no-warnings'],
   },
 });

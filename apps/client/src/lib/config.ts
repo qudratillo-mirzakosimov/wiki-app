@@ -15,6 +15,14 @@ export function getAppName(): string {
   return getConfigValue("APP_NAME") || "Bolder Wiki";
 }
 
+// Bolder fork: the big line on the sign-in panel. The layout appends the closing period itself, so
+// trailing periods are stripped. Keep the rules and the fallback in sync with getLoginHeadline in
+// apps/server/src/oss/brand.ts.
+export function getLoginHeadline(): string {
+  const value = getConfigValue("LOGIN_HEADLINE")?.trim().replace(/\.+$/, "").trim();
+  return value || "EVERYTHING WE KNOW";
+}
+
 // AGPL-3.0 §13 source offer; empty when the deployment has not set SOURCE_CODE_URL.
 export function getSourceCodeUrl(): string | undefined {
   return getConfigValue("SOURCE_CODE_URL") || undefined;

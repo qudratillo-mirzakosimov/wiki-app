@@ -1,11 +1,11 @@
 // Bolder fork: "Continue with Google" on the login page, plus the message for a sign-in the
 // server turned away (it redirects to /login?google_error=<reason>, see
 // apps/server/src/oss/google-auth). Renders nothing when the instance has no Google config.
-import { Alert, Button, Divider } from "@mantine/core";
-import { IconBrandGoogle } from "@tabler/icons-react";
+import { Alert, Button, Divider, Text } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { isGoogleAuthEnabled } from "@/lib/config.ts";
+import { GoogleGIcon } from "@/oss/brand/google-g-icon.tsx";
 
 const MESSAGES: Record<string, string> = {
   not_a_member:
@@ -27,6 +27,10 @@ export function GoogleLogin() {
 
   return (
     <>
+      <Text size="sm" c="dimmed" mb="md">
+        {t("Use your Bolder Google account.")}
+      </Text>
+
       {message && (
         <Alert color="red" variant="light" mb="md" role="alert">
           {t(message)}
@@ -39,12 +43,13 @@ export function GoogleLogin() {
         href="/api/auth/google"
         fullWidth
         variant="default"
-        leftSection={<IconBrandGoogle size={18} />}
+        radius="xl"
+        leftSection={<GoogleGIcon />}
       >
         {t("Continue with Google")}
       </Button>
 
-      <Divider label={t("or")} labelPosition="center" my="md" />
+      <Divider label={t("or with email")} labelPosition="center" my="md" />
     </>
   );
 }
